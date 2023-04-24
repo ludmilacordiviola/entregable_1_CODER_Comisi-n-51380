@@ -11,20 +11,21 @@ class ProductManager {
         // throw new Error('This code already exists');
         return 'This code already exists';
       }
-      //______________________________________________Función para remplazar el IF
+      //__________________________________Función para remplazar el IF luego de la correccion
+      // compruebo si todos los campos estan completos, sino lanzo un error con los campos faltantes
       function validateFields(product) {
         const requiredFields = ['title', 'description', 'price', 'thumbnail', 'code', 'stock'];
-        for (const field of requiredFields) {
-          if (!product[field]) {
-            return 'Fields missing';
-          }
+        const missingFields = requiredFields.filter(field => !product[field]);
+      
+        if (missingFields.length > 0) {
+          throw new Error(`Fields missing: ${missingFields.join(', ')}`);
         }
-        return null;
       }
-      const validationError = validateFields(product);
-       if (validationError) {
-        console.log(validationError);
-        }
+      try {
+        validateFields(product);
+      } catch (error) {
+        console.error(error);
+      }
     //____________________________________________________________
     //   if (
     //     !product.title ||
@@ -62,8 +63,7 @@ class ProductManager {
     price: 6000,
     thumbnail:
       'https://i.discogs.com/chdaqKfIQd_pa0Q9CR9OEQa7vNaP5aVrNZc4w7zqxDA/rs:fit/g:sm/q:90/h:600/w:600/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTc1ODkx/NDItMTQ0NDY1NDc4/Ni0zODc0LmpwZWc.jpeg',
-    code: 'abel2015',
-    stock: 2000,
+    code: '0',
   };
   const disco8 = {
     title: 'Dawn FM',
@@ -78,6 +78,6 @@ class ProductManager {
   const productManager = new ProductManager();
   
   console.log(productManager.addProduct(disco5));
-  console.log(productManager.addProduct(disco8));
+  // console.log(productManager.addProduct(disco8));
   console.log(productManager.getProducts());
-  console.log(productManager.getProductById(4));
+  // console.log(productManager.getProductById(4));
